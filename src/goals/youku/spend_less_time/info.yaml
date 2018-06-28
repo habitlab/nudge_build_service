@@ -1,0 +1,26 @@
+description: Spend less time on Youku
+goal_statement_to_fill_in: Spend no more than TARGET UNITS on Youku each day
+progress_description: Time spent on Youku
+call_to_action: Close Youku
+interventions:
+  - generic/toast_notifications
+  - generic/show_timer_banner
+  - youku/prompt_before_watch
+  - youku/remove_sidebar_links
+  #- video/link_articles
+  #- generic/scroll_blocker
+  #- generic/show_user_info_interstitial
+  #- generic/make_user_wait
+  #- generic/close_tab_timer
+  #- generic/block_after_interval_per_visit
+default_interventions:
+  - generic/toast_notifications
+  - generic/show_timer_banner
+measurement: time_spent_on_domain
+domain: www.youku.com
+target:
+  default: 20
+  units: minutes
+icon: icon.svg
+preview: http://v.youku.com/v_show/id_XMjcxOTUyMjY2MA==.html?spm=a2hww.20023042.m_223465.5~5~5~5~5~5~A&from=y1.3-idx-beta-1519-23042.223465.1-1
+color: '#33b7e8'
