@@ -1,0 +1,30 @@
+description: Spend less time on Netflix
+goal_statement_to_fill_in: Spend no more than TARGET UNITS on Netflix each day
+progress_description: Time spent on Netflix
+call_to_action: Close Netflix
+interventions:
+  - generic/toast_notifications
+  - generic/show_timer_banner
+  - netflix/link_articles
+  - netflix/infinite_alarm
+  - netflix/stop_autoplay
+  #- netflix/mute_sound
+  - video/prompt_before_watch
+  #- netflix/show_user_info_interstitial
+  #- netflix/num_episodes
+  #- generic/make_user_wait
+  #- generic/block_after_interval_per_visit
+  #- generic/close_tab_timer
+  #- generic/scroll_blocker
+  #- generic/show_user_info_interstitial
+default_interventions:
+  - generic/toast_notifications
+  - generic/show_timer_banner
+measurement: time_spent_on_domain
+domain: www.netflix.com
+target:
+  default: 20
+  units: minutes
+icon: icon.svg
+preview: https://www.netflix.com
+color: '#b90018'
