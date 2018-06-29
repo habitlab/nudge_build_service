@@ -170,7 +170,7 @@ async function sleep(time) {
     }
 })();
 
-if (!module.parent) app.listen(3000);
+if (!module.parent) app.listen(47914);
 
 
 
