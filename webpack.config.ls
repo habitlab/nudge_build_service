@@ -116,8 +116,9 @@ webpack_config = {
             fromcwd('node_modules')
             fromcwd('bower_components')
           ]
-          query: {
-            presets: ['env', 'react']
+          options: {
+            presets: ['@babel/preset-env', 'react'],
+            # plugins: [require('@babel/plugin-proposal-object-rest-spread')]
           }
         }
         # {
