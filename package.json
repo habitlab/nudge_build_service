@@ -50,6 +50,7 @@
     "promis": "^1.1.4",
     "promise": "^8.0.1",
     "promise-debounce": "^1.0.1",
+    "r2": "^2.0.1",
     "raw-loader": "^0.5.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
