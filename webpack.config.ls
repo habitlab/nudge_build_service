@@ -108,15 +108,27 @@ webpack_config = {
             fromcwd('src/interventions')
           ]
         }
+        {
+         test: /\.jsx$/
+         loader: 'babel-loader'
+         include: [fromcwd('src')]
+         exclude: [
+           fromcwd('node_modules')
+           fromcwd('bower_components')
+         ]
+        }
         # {
-        #  test: /\.jsx$/
-        #  loader: 'babel-loader'
-        #  include: [fromcwd('src')]
-        #  exclude: [
-        #    fromcwd('node_modules')
-        #    fromcwd('bower_components')
-        #  ]
+        #  test: /\.jsx$/,
+        #  exclude: /(node_modules|bower_components)/,
+        #  use: {
+        #    loader: 'babel-loader',
+        #    options: {
+        #      presets: ['@babel/preset-env']
+        #      
+        #    }
+        #  }
         # }
+        
     ]
   }
   resolve: {

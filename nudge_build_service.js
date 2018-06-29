@@ -32,13 +32,48 @@ router.post('/', async function(ctx, next) {
     let name = 'file_' + file_iterator
     let params = ctx.request.body
     console.log(ctx.request.body)
-    fs.writeFileSync('./src/interventions/' + name + '-source.js', params.js, 'utf8')
-
+    console.log('writing jsx')
+    fs.writeFileSync('./src/interventions/' + name + '-source.jsx', params.js, 'utf8')
+    console.log('wrote jsx')
     // check for required components and install them if not installed. yarn api will do this
     // https://github.com/jonschlinkert/yarn-api
  
+   
+    //if(to_install.length > 0) {
+    //    await install()
+    //}
+
+    // webpack
+    const webpack = require('webpack');
+    require('livescript')
+    let deepcopy = require('deepcopy')
+    let webpack_config = deepcopy(require('./webpack_config_frontend.ls'))
+
+    const path = require('path')
+
+    webpack_config.entry = ['./src/interventions/' + name + '-source.jsx']
+    webpack_config.output = {
+        path: path.resolve(__dirname, "./src/interventions"),
+        filename: name + ".jsx"
+    }
+    console.log('compiling jsx')
+    let compiler = webpack(webpack_config) 
+    let stats = await new Promise(function(resolve, reject) {
+      compiler.run(function(err, stats2) {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(stats2)
+        }
+      })
+    })
+    console.log('reading compiled jsx and writing js')
+    compiled_jsx = fs.readFileSync('./src/interventions/' + name + '.jsx', 'utf8')
+    console.log(compiled_jsx)
+    fs.writeFileSync('./src/interventions/' + name + '-source.js', compiled_jsx , 'utf8')
+    console.log('wrote compiled jsx')
     let list_requires_multi = require('list_requires_multi')
-    requiredPackages = list_requires_multi(params.js)
+    requiredPackages = list_requires_multi(compiled_jsx)
     const isInstalled = require('is-installed')
     
     console.log(requiredPackages.require)
@@ -65,25 +100,15 @@ router.post('/', async function(ctx, next) {
     while (to_install.length > 0) {
         await sleep(100);
     }
-    //if(to_install.length > 0) {
-    //    await install()
-    //}
 
-    // webpack
-    const webpack = require('webpack');
-    require('livescript')
-    let deepcopy = require('deepcopy')
-    let webpack_config = deepcopy(require('./webpack_config_frontend.ls'))
-
-    const path = require('path')
     webpack_config.entry = ['./src/interventions/' + name + '-source.js']
     webpack_config.output = {
         path: path.resolve(__dirname, "./src/interventions"),
         filename: name + ".js"
     }
-
-    let compiler = webpack(webpack_config)
-    let stats = await new Promise(function(resolve, reject) {
+    console.log('compiling js')
+    compiler = webpack(webpack_config)
+    stats = await new Promise(function(resolve, reject) {
       compiler.run(function(err, stats2) {
         if (err) {
           reject(err)
@@ -97,8 +122,15 @@ router.post('/', async function(ctx, next) {
     console.log('finished packing')
     generated = fs.readFileSync('./src/interventions/' + name + '.js', 'utf8')
     //ctx.body = JSON.stringify(params.js)
+
+/*
     fs.unlinkSync('./src/interventions/' + name + '.js')
     fs.unlinkSync('./src/interventions/' + name + '-source.js')
+    fs.unlinkSync('./src/interventions/' + name + '.jsx')
+    fs.unlinkSync('./src/interventions/' + name + '-source.jsx')
+*/
+
+
     ctx.body = generated
     //ctx.body = JSON.stringify({response: 'ok'})
 /*
