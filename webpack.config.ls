@@ -109,13 +109,16 @@ webpack_config = {
           ]
         }
         {
-         test: /\.jsx$/
-         loader: 'babel-loader'
-         include: [fromcwd('src')]
-         exclude: [
-           fromcwd('node_modules')
-           fromcwd('bower_components')
-         ]
+          test: /\.jsx$/
+          loader: 'babel-loader'
+          include: [fromcwd('src')]
+          exclude: [
+            fromcwd('node_modules')
+            fromcwd('bower_components')
+          ]
+          query: {
+            presets: ['env', 'react']
+          }
         }
         # {
         #  test: /\.jsx$/,
