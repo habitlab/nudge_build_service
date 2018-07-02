@@ -76,7 +76,7 @@ router.post('/', async function(ctx, next) {
     requiredPackages = list_requires_multi(compiled_jsx)
     const isInstalled = require('is-installed')
 
-    var intervention_info;
+    let intervention_info = {};
     intervention_info.styles = [];
     let required_styles = list_requires_multi(compiled_jsx, ['require_style'])
     for (style of required_styles['require_style']) {
