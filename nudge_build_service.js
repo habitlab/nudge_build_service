@@ -75,6 +75,19 @@ router.post('/', async function(ctx, next) {
     let list_requires_multi = require('list_requires_multi')
     requiredPackages = list_requires_multi(compiled_jsx)
     const isInstalled = require('is-installed')
+
+    var intervention_info;
+    intervention_info.styles = [];
+    let required_styles = list_requires_multi(compiled_jsx, ['require_style'])
+    for (style of required_styles['require_style']) {
+        intervention_info.styles.push(style)
+    }
+
+    intervention_info.css_files = [];
+    let required_css = list_requires_multi(compiled_jsx, ['require_css'])
+    for (file of required_css['require_css']) {
+        intervention_info.css_paths.push(css_paths)
+    }
     
     console.log(requiredPackages.require)
     const npmExists = isInstalled.sync('npm')
@@ -120,7 +133,7 @@ router.post('/', async function(ctx, next) {
     console.log('stats are')
     console.log(stats)
     console.log('finished packing')
-    generated = fs.readFileSync('./src/interventions/' + name + '.js', 'utf8')
+    intervention_info.generated = fs.readFileSync('./src/interventions/' + name + '.js', 'utf8')
     //ctx.body = JSON.stringify(params.js)
 
 /*
@@ -131,7 +144,7 @@ router.post('/', async function(ctx, next) {
 */
 
 
-    ctx.body = generated
+    ctx.body = intervention_info
     //ctx.body = JSON.stringify({response: 'ok'})
 /*
     compiler.run((err, stats) => {
