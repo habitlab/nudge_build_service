@@ -130,8 +130,8 @@ router.post('/', async function(ctx, next) {
         }
       })
     })
-    console.log('stats are')
-    console.log(stats)
+    //console.log('stats are')
+    //console.log(stats)
     console.log('finished packing')
     intervention_info.generated = fs.readFileSync('./src/interventions/' + name + '.js', 'utf8')
     //ctx.body = JSON.stringify(params.js)
