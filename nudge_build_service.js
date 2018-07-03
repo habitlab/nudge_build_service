@@ -32,9 +32,9 @@ router.post('/', async function(ctx, next) {
     let name = 'file_' + file_iterator
     let params = ctx.request.body
     console.log(ctx.request.body)
-    console.log('writing jsx')
-    fs.writeFileSync('./src/interventions/' + name + '-source.jsx', params.js, 'utf8')
-    console.log('wrote jsx')
+    console.log('writing js')
+    fs.writeFileSync('./src/interventions/' + name + '-source.js', params.js, 'utf8')
+    console.log('wrote js')
     // check for required components and install them if not installed. yarn api will do this
     // https://github.com/jonschlinkert/yarn-api
  
@@ -51,40 +51,19 @@ router.post('/', async function(ctx, next) {
 
     const path = require('path')
 
-    webpack_config.entry = ['./src/interventions/' + name + '-source.jsx']
-    webpack_config.output = {
-        path: path.resolve(__dirname, "./src/interventions"),
-        filename: name + ".jsx"
-    }
-    console.log('compiling jsx')
-    let compiler = webpack(webpack_config) 
-    let stats = await new Promise(function(resolve, reject) {
-      compiler.run(function(err, stats2) {
-        if (err) {
-          reject(err)
-        } else {
-          resolve(stats2)
-        }
-      })
-    })
-    console.log('reading compiled jsx and writing js')
-    compiled_jsx = fs.readFileSync('./src/interventions/' + name + '.jsx', 'utf8')
-    console.log(compiled_jsx)
-    fs.writeFileSync('./src/interventions/' + name + '-source.js', compiled_jsx , 'utf8')
-    console.log('wrote compiled jsx')
     let list_requires_multi = require('list_requires_multi')
-    requiredPackages = list_requires_multi(compiled_jsx)
+    requiredPackages = list_requires_multi(params.js)
     const isInstalled = require('is-installed')
 
     let intervention_info = {};
     intervention_info.styles = [];
-    let required_styles = list_requires_multi(compiled_jsx, ['require_style'])
+    let required_styles = list_requires_multi(params.js, ['require_style'])
     for (style of required_styles['require_style']) {
         intervention_info.styles.push(style)
     }
 
     intervention_info.css_files = [];
-    let required_css = list_requires_multi(compiled_jsx, ['require_css'])
+    let required_css = list_requires_multi(params.js, ['require_css'])
     for (file of required_css['require_css']) {
         intervention_info.css_paths.push(css_paths)
     }
