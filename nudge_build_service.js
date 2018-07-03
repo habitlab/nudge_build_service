@@ -58,7 +58,7 @@ router.post('/', async function(ctx, next) {
     let intervention_info = {};
     intervention_info.styles = [];
     let required_styles = list_requires_multi(params.js, ['require_style'])
-    for (style of required_styles['require_style']) {
+    for (style of required_styles['require_style']) {e
         intervention_info.styles.push(style)
     }
 
@@ -92,6 +92,8 @@ router.post('/', async function(ctx, next) {
     while (to_install.length > 0) {
         await sleep(100);
     }
+
+
 
     webpack_config.entry = ['./src/interventions/' + name + '-source.js']
     webpack_config.output = {
@@ -170,9 +172,10 @@ async function install() {
     var yarn = require('yarn-api');
     while(to_install.length > 0) {
         await new Promise(function(resolve, reject) {
-            yarn(['add', to_install.shift()], function(err) {
+            yarn(['add', to_install[0]], function(err) {
                 resolve()
             })
         })
+        to_install.shift()
     }
 }
